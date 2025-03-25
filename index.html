@@ -21,6 +21,14 @@
                 50% { transform: scale(1.05); opacity: 0.8; }
                 100% { transform: scale(1); opacity: 1; }
             }
+
+            @keyframes slideProgress {
+                from { width: 0%; }
+                to { width: var(--progress); }
+            }
+            .metric-progress {
+                animation: slideProgress 1.5s ease-out forwards;
+            }
         </style>
     </head>
     <title>Jobster</title>
@@ -86,7 +94,7 @@
                                 <span class="text-xs font-bold text-gray-700">45%</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-1.5">
-                                <div class="bg-blue-500 h-1.5 rounded-full" style="width: 45%"></div>
+                                <div class="bg-blue-500 h-1.5 rounded-full metric-progress" style="--progress: 45%"></div>
                             </div>
                         </div>
 
@@ -97,7 +105,7 @@
                                 <span class="text-xs font-bold text-gray-700">68%</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-1.5">
-                                <div class="bg-purple-500 h-1.5 rounded-full" style="width: 68%"></div>
+                                <div class="bg-purple-500 h-1.5 rounded-full metric-progress" style="--progress: 68%"></div>
                             </div>
                         </div>
                     </div>
@@ -113,8 +121,8 @@
                             <div class="text-xs text-gray-500">Running</div>
                         </div>
                         <div class="bg-white rounded-lg p-2 shadow-sm">
-                            <div class="text-base font-bold text-yellow-600">8</div>
-                            <div class="text-xs text-gray-500">Pending</div>
+                            <div class="text-base font-bold text-red-600">8</div>
+                            <div class="text-xs text-gray-500">Failed</div>
                         </div>
                         <div class="bg-white rounded-lg p-2 shadow-sm">
                             <div class="text-base font-bold text-blue-600">226</div>
@@ -192,4 +200,5 @@
         <div>
     </div>
 </body>
+<script src="dynamic.js"></script>
 </html>

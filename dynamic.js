@@ -1,4 +1,3 @@
-// Job Table Sorting and Filtering Functionality
 class JobTableManager {
     constructor() {
         this.table = document.querySelector('table');
@@ -6,128 +5,83 @@ class JobTableManager {
         this.tableBody = this.table?.querySelector('tbody');
         this.rows = this.tableBody?.querySelectorAll('tr');
         this.filterInput = this.createFilterInput();
+        this.sortConfig = {
+            column: null,
+            direction: 'asc'
+        };
         this.init();
     }
 
-    createFilterInput() {
-        const input = document.createElement('input');
-        input.placeholder = 'Search jobs...';
-        input.classList.add(
-            'px-4', 'py-2', 'border', 
-            'rounded-md', 'mb-4', 'w-64', 
-            'focus:outline-none', 'focus:ring-2', 
-            'focus:ring-purple-500'
-        );
-        this.table?.parentElement.insertBefore(input, this.table);
-        return input;
-    }
+    // ...existing code for createFilterInput...
 
     setupSorting() {
         this.headers?.forEach((header, index) => {
             header.classList.add('cursor-pointer', 'select-none', 'hover:bg-gray-50');
             header.addEventListener('click', () => this.sortColumn(header, index));
+            // Add initial sort indicators
+            const indicator = document.createElement('span');
+            indicator.className = 'sort-indicator ml-2 opacity-0 transition-opacity';
+            indicator.textContent = '↑';
+            header.appendChild(indicator);
         });
     }
 
     sortColumn(header, index) {
-        const direction = header.classList.contains('sort-asc') ? -1 : 1;
-        const sortedRows = Array.from(this.rows || []).sort((a, b) => {
-            const aCol = a.querySelector(`td:nth-child(${index + 1})`).textContent;
-            const bCol = b.querySelector(`td:nth-child(${index + 1})`).textContent;
-            return aCol > bCol ? direction : -direction;
-        });
+        const isAsc = this.sortConfig.column === index && this.sortConfig.direction === 'asc';
+        this.sortConfig.column = index;
+        this.sortConfig.direction = isAsc ? 'desc' : 'asc';
 
-        this.headers?.forEach(h => h.classList.remove('sort-asc', 'sort-desc'));
-        header.classList.toggle('sort-asc', direction === 1);
-        header.classList.toggle('sort-desc', direction === -1);
-
-        // Add sorting indicators
-        header.querySelector('.sort-indicator')?.remove();
-        const indicator = document.createElement('span');
-        indicator.className = 'sort-indicator ml-2';
-        indicator.textContent = direction === 1 ? '↑' : '↓';
-        header.appendChild(indicator);
-
-        this.tableBody?.append(...sortedRows);
+        const sortedRows = this.getSortedRows(index, isAsc);
+        this.updateSortIndicators(header);
+        this.updateTableRows(sortedRows);
     }
 
-    setupFilter() {
-        this.filterInput?.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            Array.from(this.rows || []).forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
-            });
+    getSortedRows(index, isAsc) {
+        return Array.from(this.rows || []).sort((a, b) => {
+            const aCol = this.getCellValue(a, index);
+            const bCol = this.getCellValue(b, index);
+            return this.compareValues(aCol, bCol, !isAsc);
         });
     }
 
-    init() {
-        if (!this.table) {
-            console.error('No table found in the document');
-            return;
+    getCellValue(row, index) {
+        const cell = row.querySelector(`td:nth-child(${index + 1})`);
+        // Handle different cell content types
+        if (cell.querySelector('.bg-green-100')) return 'a'; // Running
+        if (cell.querySelector('.bg-yellow-100')) return 'b'; // Pending
+        if (cell.querySelector('.bg-red-100')) return 'c'; // Failed
+        if (cell.querySelector('.bg-gray-200')) { // Progress bar
+            return parseInt(cell.textContent) || 0;
         }
-        this.setupSorting();// filepath: /Users/jerry/workspace/cool_stuff/jobster/dynamic.js
-// Job Table Sorting and Filtering Functionality
-class JobTableManager {
-    constructor() {
-        this.table = document.querySelector('table');
-        this.headers = this.table?.querySelectorAll('th');
-        this.tableBody = this.table?.querySelector('tbody');
-        this.rows = this.tableBody?.querySelectorAll('tr');
-        this.filterInput = this.createFilterInput();
-        this.init();
+        return cell.textContent.toLowerCase();
     }
 
-    createFilterInput() {
-        const input = document.createElement('input');
-        input.placeholder = 'Search jobs...';
-        input.classList.add(
-            'px-4', 'py-2', 'border', 
-            'rounded-md', 'mb-4', 'w-64', 
-            'focus:outline-none', 'focus:ring-2', 
-            'focus:ring-purple-500'
-        );
-        this.table?.parentElement.insertBefore(input, this.table);
-        return input;
+    compareValues(a, b, ascending) {
+        if (typeof a === 'number' && typeof b === 'number') {
+            return ascending ? a - b : b - a;
+        }
+        return ascending ? 
+            a < b ? -1 : (a > b ? 1 : 0) :
+            a < b ? 1 : (a > b ? -1 : 0);
     }
 
-    setupSorting() {
-        this.headers?.forEach((header, index) => {
-            header.classList.add('cursor-pointer', 'select-none', 'hover:bg-gray-50');
-            header.addEventListener('click', () => this.sortColumn(header, index));
+    updateSortIndicators(activeHeader) {
+        this.headers?.forEach(header => {
+            const indicator = header.querySelector('.sort-indicator');
+            if (header === activeHeader) {
+                indicator.textContent = this.sortConfig.direction === 'asc' ? '↑' : '↓';
+                indicator.classList.remove('opacity-0');
+            } else {
+                indicator.textContent = '↑';
+                indicator.classList.add('opacity-0');
+            }
         });
     }
 
-    sortColumn(header, index) {
-        const direction = header.classList.contains('sort-asc') ? -1 : 1;
-        const sortedRows = Array.from(this.rows || []).sort((a, b) => {
-            const aCol = a.querySelector(`td:nth-child(${index + 1})`).textContent;
-            const bCol = b.querySelector(`td:nth-child(${index + 1})`).textContent;
-            return aCol > bCol ? direction : -direction;
-        });
-
-        this.headers?.forEach(h => h.classList.remove('sort-asc', 'sort-desc'));
-        header.classList.toggle('sort-asc', direction === 1);
-        header.classList.toggle('sort-desc', direction === -1);
-
-        // Add sorting indicators
-        header.querySelector('.sort-indicator')?.remove();
-        const indicator = document.createElement('span');
-        indicator.className = 'sort-indicator ml-2';
-        indicator.textContent = direction === 1 ? '↑' : '↓';
-        header.appendChild(indicator);
-
+    updateTableRows(sortedRows) {
         this.tableBody?.append(...sortedRows);
-    }
-
-    setupFilter() {
-        this.filterInput?.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            Array.from(this.rows || []).forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
-            });
-        });
+        // Update rows reference after sorting
+        this.rows = this.tableBody?.querySelectorAll('tr');
     }
 
     init() {
@@ -136,3 +90,12 @@ class JobTableManager {
             return;
         }
         this.setupSorting();
+        this.setupFilter();
+    }
+}
+
+// Initialize the table manager when the DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new JobTableManager();
+});
+
