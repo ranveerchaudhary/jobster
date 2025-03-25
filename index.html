@@ -4,6 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <head>̀
+        <style>
+            @keyframes fillProgress {
+                from { stroke-dashoffset: 376.8; }
+                to { stroke-dashoffset: 30.144; }
+            }
+            .circle-progress {
+                animation: fillProgress 1.5s ease-out forwards;
+            }
+            .pulse {
+                animation: pulse 2s infinite;
+            }
+            @keyframes pulse {
+                0% { transform: scale(1); opacity: 1; }
+                50% { transform: scale(1.05); opacity: 0.8; }
+                100% { transform: scale(1); opacity: 1; }
+            }
+        </style>
+    </head>
     <title>Jobster</title>
 </head>
 <body class="flex justify-center h-screen bg-black">
@@ -35,7 +54,7 @@
                                 cy="72"
                             />
                             <circle
-                                class="text-green-500"
+                                class="text-green-500 circle-progress"
                                 stroke-width="6"
                                 stroke="currentColor"
                                 fill="transparent"
@@ -43,7 +62,6 @@
                                 cx="72"
                                 cy="72"
                                 stroke-dasharray="376.8"
-                                stroke-dashoffset="30.144"
                             />
                         </svg>
                         <div class="absolute inset-0 flex flex-col items-center justify-center">
@@ -138,6 +156,34 @@
                                     </div>
                                 </td>
                             </tr>
+
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#JOB-002</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ML Training</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5m ago</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-yellow-600 h-2.5 rounded-full" style="width: 25%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#JOB-003</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Failed</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Data Import</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">10m ago</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-red-600 h-2.5 rounded-full" style="width: 80%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+
                             <!-- Add more rows as needed -->
                         </tbody>
                     </table>
