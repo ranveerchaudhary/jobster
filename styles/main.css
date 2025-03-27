@@ -1,0 +1,97 @@
+@keyframes fillProgress {
+    from { stroke-dashoffset: 376.8; }
+    to { stroke-dashoffset: 30.144; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slideProgress {
+    from { width: 0%; }
+    to { width: var(--progress); }
+}
+
+.circle-progress {
+    animation: fillProgress 1.5s ease-out forwards;
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+.metric-progress {
+    animation: slideProgress 1.5s ease-out forwards;
+}
+
+/* Dark mode styles */
+.dark {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+.dark .bg-gray-200 {
+    background-color: #2d2d2d;
+}
+
+.dark .bg-white {
+    background-color: #383838;
+    color: #ffffff;
+}
+
+/* Enhanced Dark Mode Styles */
+:root {
+    --transition-duration: 0.3s;
+}
+
+body {
+    transition: background-color var(--transition-duration);
+}
+
+.dark .bg-gray-200 {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+}
+
+.dark .bg-white {
+    background-color: #383838;
+    color: #e0e0e0;
+}
+
+.dark .text-gray-500 {
+    color: #a0a0a0;
+}
+
+.dark .text-gray-800 {
+    color: #e0e0e0;
+}
+
+.dark .hover\:bg-gray-50:hover {
+    background-color: #2d2d2d;
+}
+
+.dark .bg-gray-100 {
+    background-color: #2d2d2d;
+}
+
+.dark .divide-gray-200 > * {
+    border-color: #404040;
+}
+
+/* Loading Animation */
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+}
+
+.loading {
+    animation: shimmer 2s infinite linear;
+    background: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+    background-size: 1000px 100%;
+}
+
+.dark .loading {
+    background: linear-gradient(to right, #2d2d2d 0%, #383838 20%, #2d2d2d 40%, #2d2d2d 100%);
+}
