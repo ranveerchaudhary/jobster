@@ -258,9 +258,18 @@ class JobTableManager {
             this.setupSorting();
             this.setupSearch();
             this.setupFilter();
+            this.setupLogout();
         } catch (error) {
             console.error('Initialization error:', error);
         }
+    }
+
+    setupLogout() {
+        const logoutBtn = document.getElementById('logoutBtn');
+        logoutBtn?.addEventListener('click', () => {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'login.html';
+        });
     }
 }
 
