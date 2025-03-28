@@ -44,6 +44,21 @@
         .delay-100 { animation-delay: 200ms; }
         .delay-200 { animation-delay: 400ms; }
         .delay-300 { animation-delay: 600ms; }
+
+        /* Add smooth transition for dark mode */
+        * {
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        /* Exclude certain properties from transition to prevent lag */
+        .no-transition {
+            transition: none !important;
+        }
+        
+        /* Optimize transitions for specific elements */
+        .bg-white, .bg-gray-100, .bg-gray-200, .bg-gray-800 {
+            transition: background-color 0.3s ease;
+        }
     </style>
 </head>
 <body class="bg-black flex justify-center h-screen bg-gradient-to-br from-[#0f1022] via-[#0c0d1b] to-[#060711]">
