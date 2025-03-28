@@ -272,8 +272,13 @@ class JobTableManager {
         }
         
         logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('isLoggedIn');
-            window.location.href = 'login.html';
+            document.body.style.transition = 'opacity 1s linear';
+            document.body.style.opacity = '0';
+            
+            setTimeout(() => {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'login.html';
+            }, 1000);
         });
     }
 }
