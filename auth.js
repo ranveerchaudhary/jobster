@@ -29,34 +29,34 @@ document.addEventListener('DOMContentLoaded', () => {
         // Demo credentials - replace with actual authentication
         if (email === 'demo@jobster.com' && password === 'demo123') {
             try {
-                // Fade out form
+                // Fade out form more smoothly
                 await anime({
                     targets: formContainer,
-                    scale: [1, 0.95],
+                    scale: [1, 0.98],
                     opacity: [1, 0],
-                    duration: 500,
-                    easing: 'easeInOutQuad'
+                    duration: 800,
+                    easing: 'easeOutQuad'
                 }).finished;
 
-                // Create and animate overlay
+                // Create and animate overlay with a smoother transition
                 const overlay = document.createElement('div');
-                overlay.className = 'fixed inset-0 bg-indigo-900 z-50';
+                overlay.className = 'fixed inset-0 bg-gradient-to-br from-indigo-900 to-purple-900 z-50';
                 overlay.style.opacity = '0';
                 document.body.appendChild(overlay);
 
                 await anime({
                     targets: overlay,
                     opacity: [0, 1],
-                    duration: 500,
-                    easing: 'easeInOutQuad'
+                    duration: 1000,
+                    easing: 'easeOutQuad'
                 }).finished;
 
                 localStorage.setItem('isLoggedIn', 'true');
                 
-                // Short delay before redirect
+                // Longer delay before redirect for smoother transition
                 setTimeout(() => {
                     window.location.href = 'index.html';
-                }, 100);
+                }, 800);
             } catch (error) {
                 console.error('Animation error:', error);
                 // Fallback direct redirect
