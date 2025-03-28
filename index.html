@@ -306,76 +306,15 @@
         </div>
     </div>
 </body>
+<script src="js/UIManager.js"></script>
+<script src="js/JobManager.js"></script>
 <script>
-let activeDropdown = null;
-
-function handleDropdownClick(event) {
-    event.stopPropagation();
-    const button = event.currentTarget;
-    const dropdown = button.nextElementSibling;
-    
-    // Close any open dropdown
-    if (activeDropdown && activeDropdown !== dropdown) {
-        activeDropdown.classList.add('hidden');
-        activeDropdown.classList.remove('show-above', 'show-below');
-    }
-
-    // Toggle current dropdown
-    if (dropdown.classList.contains('hidden')) {
-        positionDropdown(button, dropdown);
-        dropdown.classList.remove('hidden');
-        activeDropdown = dropdown;
-    } else {
-        dropdown.classList.add('hidden');
-        dropdown.classList.remove('show-above', 'show-below');
-        activeDropdown = null;
-    }
-}
-
-function positionDropdown(button, dropdown) {
-    const buttonRect = button.getBoundingClientRect();
-    const tableContainer = button.closest('.overflow-auto');
-    const containerRect = tableContainer.getBoundingClientRect();
-    
-    // Reset classes and styles to measure natural height
-    dropdown.classList.remove('show-above', 'show-below', 'hidden');
-    const dropdownHeight = dropdown.offsetHeight;
-    
-    // Space available below and above
-    const spaceBelow = containerRect.bottom - buttonRect.bottom;
-    const spaceAbove = buttonRect.top - containerRect.top;
-    
-    // Clear previous positioning
-    dropdown.style.maxHeight = '';
-    
-    if (spaceBelow < dropdownHeight && spaceAbove > spaceBelow) {
-        // Position above
-        dropdown.classList.add('show-above');
-        dropdown.style.maxHeight = `${spaceAbove - 10}px`;
-    } else {
-        // Position below
-        dropdown.classList.add('show-below');
-        dropdown.style.maxHeight = `${spaceBelow - 10}px`;
-    }
-}
-
-// Close dropdown when clicking outside
-document.addEventListener('click', (event) => {
-    if (activeDropdown && !event.target.closest('.dropdown-menu')) {
-        activeDropdown.classList.add('hidden');
-        activeDropdown.classList.remove('show-above', 'show-below');
-        activeDropdown = null;
-    }
-});
-
-// Update dropdown position on scroll
-const tableContainer = document.querySelector('.overflow-auto');
-tableContainer.addEventListener('scroll', () => {
-    if (activeDropdown) {
-        const button = activeDropdown.previousElementSibling;
-        positionDropdown(button, activeDropdown);
-    }
-});
+    const jobManager = new JobManager();
+    const sampleJobs = [    event.stopPropagation();
+        { id: "JOB-001", status: "Running", type: "Data Processing", started: "2m ago", progress: 45 },t;
+        { id: "JOB-002", status: "Pending", type: "ML Training", started: "5m ago", progress: 25 },ton.nextElementSibling;
+        { id: "JOB-003", status: "Failed", type: "Data Import", started: "10m ago", progress: 80 }
+    ];
+    jobManager.init(sampleJobs);
 </script>
-<script src="dynamic.js"></script>
 </html>
