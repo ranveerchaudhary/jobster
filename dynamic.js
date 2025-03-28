@@ -293,23 +293,70 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function toggleDropdown(button) {
-    // Close all other open dropdowns
-    document.querySelectorAll('.absolute.right-0.mt-2').forEach(dropdown => {
-        if (dropdown !== button.nextElementSibling) {
-            dropdown.classList.add('hidden');
-        }
+    // Prevent default event handling
+    event.preventDefault();
+    event.stopPropagation();
+
+    // Get the menu element
+    const menu = button.nextElementSibling;
+    const isCurrentlyHidden = menu.classList.contains('hidden');
+
+    // Close all menus
+    document.querySelectorAll('.action-menu').forEach(m => {
+        m.classList.add('hidden');
+        m.style = ''; // Reset any custom positioning
     });
-    
-    // Toggle current dropdown
-    const dropdown = button.nextElementSibling;
-    dropdown.classList.toggle('hidden');
+
+    // If the clicked menu was hidden, show it
+    if (isCurrentlyHidden) {
+        menu.classList.remove('hidden');
+
+        // Get positioning information
+        const buttonRect = button.getBoundingClientRect();
+        const menuRect = menu.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+
+        // Reset menu styles
+        menu.style.position = 'absolute';
+        menu.style.top = '';
+        menu.style.bottom = '';
+        menu.style.left = '';
+        menu.style.right = '';
+
+        // Check if menu would go off screen vertically
+        const spaceBelow = viewportHeight - buttonRect.bottom;
+        const spaceAbove = buttonRect.top;
+
+        if (spaceBelow < menuRect.height && spaceAbove > menuRect.height) {
+            // Position above the button if not enough space below
+            menu.style.bottom = '100%';
+            menu.style.top = 'auto';
+            menu.style.marginBottom = '0.5rem';
+        } else {
+            // Default: position below the button
+            menu.style.top = '100%';
+            menu.style.bottom = 'auto';
+            menu.style.marginTop = '0.5rem';
+        }
+
+        // Ensure menu stays within the viewport horizontally
+        const viewportWidth = window.innerWidth;
+        if (buttonRect.left + menuRect.width > viewportWidth) {
+            menu.style.right = '0';
+            menu.style.left = 'auto';
+        } else {
+            menu.style.left = '0';
+            menu.style.right = 'auto';
+        }
+    }
 }
 
-// Close dropdowns when clicking outside
+// Update click outside handler
 document.addEventListener('click', (e) => {
-    if (!e.target.closest('button')) {
-        document.querySelectorAll('.absolute.right-0.mt-2').forEach(dropdown => {
-            dropdown.classList.add('hidden');
+    if (!e.target.closest('.relative')) {
+        document.querySelectorAll('.action-menu').forEach(menu => {
+            menu.classList.add('hidden');
+            menu.style = ''; // Reset any custom positioning
         });
     }
 });

@@ -59,6 +59,30 @@
         .bg-white, .bg-gray-100, .bg-gray-200, .bg-gray-800 {
             transition: background-color 0.3s ease;
         }
+
+        /* Enhanced dropdown styling */
+        .dropdown-menu {
+            z-index: 50;
+            position: absolute;
+            transform-origin: top right;
+            transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+        }
+
+        .dropdown-menu.show-above {
+            bottom: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .dropdown-menu.show-below {
+            top: 100%;
+            margin-top: 0.5rem;
+        }
+
+        .dropdown-menu.hidden {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="bg-black flex justify-center h-screen bg-gradient-to-br from-[#0f1022] via-[#0c0d1b] to-[#060711]">
@@ -199,16 +223,16 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex justify-center">
                                     <div class="relative inline-block text-left">
-                                        <button class="p-2.5 rounded-full hover:bg-gray-100 flex items-center justify-center" onclick="toggleDropdown(this)">
+                                        <button class="p-2.5 rounded-full hover:bg-gray-100 flex items-center justify-center" onclick="handleDropdownClick(event)">
                                             <svg class="w-7 h-7 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
                                                 <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
                                             </svg>
                                         </button>
-                                        <div class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50 origin-top-right" role="menu">
+                                        <div class="dropdown-menu hidden absolute right-0 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5" style="min-width: 180px;">
                                             <div class="py-1">
-                                                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">View Details</button>
-                                                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Pause Job</button>
-                                                <button class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100" role="menuitem">Cancel Job</button>
+                                                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View Details</button>
+                                                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pause Job</button>
+                                                <button class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Cancel Job</button>
                                             </div>
                                         </div>
                                     </div>
@@ -229,16 +253,16 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex justify-center">
                                     <div class="relative inline-block text-left">
-                                        <button class="p-2.5 rounded-full hover:bg-gray-100 flex items-center justify-center" onclick="toggleDropdown(this)">
+                                        <button class="p-2.5 rounded-full hover:bg-gray-100 flex items-center justify-center" onclick="handleDropdownClick(event)">
                                             <svg class="w-7 h-7 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
                                                 <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
                                             </svg>
                                         </button>
-                                        <div class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50 origin-top-right" role="menu">
+                                        <div class="dropdown-menu hidden absolute right-0 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5" style="min-width: 180px;">
                                             <div class="py-1">
-                                                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">View Details</button>
-                                                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Pause Job</button>
-                                                <button class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100" role="menuitem">Cancel Job</button>
+                                                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View Details</button>
+                                                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pause Job</button>
+                                                <button class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Cancel Job</button>
                                             </div>
                                         </div>
                                     </div>
@@ -258,16 +282,16 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex justify-center">
                                     <div class="relative inline-block text-left">
-                                        <button class="p-2.5 rounded-full hover:bg-gray-100 flex items-center justify-center" onclick="toggleDropdown(this)">
+                                        <button class="p-2.5 rounded-full hover:bg-gray-100 flex items-center justify-center" onclick="handleDropdownClick(event)">
                                             <svg class="w-7 h-7 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
                                                 <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
                                             </svg>
                                         </button>
-                                        <div class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50 origin-top-right" role="menu">
+                                        <div class="dropdown-menu hidden absolute right-0 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5" style="min-width: 180px;">
                                             <div class="py-1">
-                                                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">View Details</button>
-                                                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Pause Job</button>
-                                                <button class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100" role="menuitem">Cancel Job</button>
+                                                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View Details</button>
+                                                <button class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pause Job</button>
+                                                <button class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Cancel Job</button>
                                             </div>
                                         </div>
                                     </div>
@@ -282,5 +306,76 @@
         </div>
     </div>
 </body>
+<script>
+let activeDropdown = null;
+
+function handleDropdownClick(event) {
+    event.stopPropagation();
+    const button = event.currentTarget;
+    const dropdown = button.nextElementSibling;
+    
+    // Close any open dropdown
+    if (activeDropdown && activeDropdown !== dropdown) {
+        activeDropdown.classList.add('hidden');
+        activeDropdown.classList.remove('show-above', 'show-below');
+    }
+
+    // Toggle current dropdown
+    if (dropdown.classList.contains('hidden')) {
+        positionDropdown(button, dropdown);
+        dropdown.classList.remove('hidden');
+        activeDropdown = dropdown;
+    } else {
+        dropdown.classList.add('hidden');
+        dropdown.classList.remove('show-above', 'show-below');
+        activeDropdown = null;
+    }
+}
+
+function positionDropdown(button, dropdown) {
+    const buttonRect = button.getBoundingClientRect();
+    const tableContainer = button.closest('.overflow-auto');
+    const containerRect = tableContainer.getBoundingClientRect();
+    
+    // Reset classes and styles to measure natural height
+    dropdown.classList.remove('show-above', 'show-below', 'hidden');
+    const dropdownHeight = dropdown.offsetHeight;
+    
+    // Space available below and above
+    const spaceBelow = containerRect.bottom - buttonRect.bottom;
+    const spaceAbove = buttonRect.top - containerRect.top;
+    
+    // Clear previous positioning
+    dropdown.style.maxHeight = '';
+    
+    if (spaceBelow < dropdownHeight && spaceAbove > spaceBelow) {
+        // Position above
+        dropdown.classList.add('show-above');
+        dropdown.style.maxHeight = `${spaceAbove - 10}px`;
+    } else {
+        // Position below
+        dropdown.classList.add('show-below');
+        dropdown.style.maxHeight = `${spaceBelow - 10}px`;
+    }
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (event) => {
+    if (activeDropdown && !event.target.closest('.dropdown-menu')) {
+        activeDropdown.classList.add('hidden');
+        activeDropdown.classList.remove('show-above', 'show-below');
+        activeDropdown = null;
+    }
+});
+
+// Update dropdown position on scroll
+const tableContainer = document.querySelector('.overflow-auto');
+tableContainer.addEventListener('scroll', () => {
+    if (activeDropdown) {
+        const button = activeDropdown.previousElementSibling;
+        positionDropdown(button, activeDropdown);
+    }
+});
+</script>
 <script src="dynamic.js"></script>
 </html>
