@@ -254,11 +254,11 @@ class JobTableManager {
             if (!this.table) {
                 throw new Error('No table found in the document');
             }
+            this.setupLogout(); // Move setupLogout before other setups
             this.setupDarkMode();
             this.setupSorting();
             this.setupSearch();
             this.setupFilter();
-            this.setupLogout();
         } catch (error) {
             console.error('Initialization error:', error);
         }
@@ -266,7 +266,12 @@ class JobTableManager {
 
     setupLogout() {
         const logoutBtn = document.getElementById('logoutBtn');
-        logoutBtn?.addEventListener('click', () => {
+        if (!logoutBtn) {
+            console.error('Logout button not found');
+            return;
+        }
+        
+        logoutBtn.addEventListener('click', () => {
             localStorage.removeItem('isLoggedIn');
             window.location.href = 'login.html';
         });
