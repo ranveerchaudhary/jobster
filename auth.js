@@ -4,79 +4,109 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'index.html';
     }
 
-    // Animate form elements
+    // Simple fade-in animation for form
     anime({
         targets: '#loginForm > div',
-        translateY: [20, 0],
         opacity: [0, 1],
-        delay: anime.stagger(100, {start: 300}),
-        easing: 'easeOutCubic'
-    });
-
-    // Animate accent circle
-    anime({
-        targets: '.accent-circle',
-        strokeDashoffset: [anime.setDashoffset, 0],
-        easing: 'easeInOutSine',
-        duration: 1500,
-        delay: 300,
-        direction: 'alternate',
-        loop: true
-    });
-
-    // Create particle effect
-    const particlesContainer = document.querySelector('.particles');
-    for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'absolute w-1 h-1 bg-white rounded-full';
-        particlesContainer.appendChild(particle);
-        
-        anime({
-            targets: particle,
-            translateX: () => anime.random(-500, 500),
-            translateY: () => anime.random(-500, 500),
-            scale: () => anime.random(0, 1),
-            opacity: [0.5, 0],
-            duration: () => anime.random(1000, 3000),
-            delay: () => anime.random(0, 2000),
-            loop: true,
-            easing: 'easeOutExpo'
-        });
-    }
-
-    // Add hover effect to login button
-    const loginBtn = document.querySelector('.login-btn');
-    loginBtn.addEventListener('mouseenter', () => {
-        anime({
-            targets: loginBtn,
-            scale: 1.05,
-            duration: 300,
-            easing: 'easeOutElastic(1, .8)'
-        });
-    });
-
-    loginBtn.addEventListener('mouseleave', () => {
-        anime({
-            targets: loginBtn,
-            scale: 1,
-            duration: 300,
-            easing: 'easeOutElastic(1, .8)'
-        });
+        translateY: [10, 0],
+        duration: 800,
+        delay: anime.stagger(100),
+        easing: 'easeOutQuad'
     });
 
     const loginForm = document.getElementById('loginForm');
-    loginForm?.addEventListener('submit', (e) => {
+    loginForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
+        const formContainer = document.querySelector('.bg-white');
+        const loginButton = document.querySelector('.login-btn');
+
+        // Disable button during animation
+        loginButton.disabled = true;
 
         // Demo credentials - replace with actual authentication
         if (email === 'demo@jobster.com' && password === 'demo123') {
-            localStorage.setItem('isLoggedIn', 'true');
-            window.location.href = 'index.html';
+            try {
+                // Fade out form
+                await anime({
+                    targets: formContainer,
+                    scale: [1, 0.95],
+                    opacity: [1, 0],
+                    duration: 500,
+                    easing: 'easeInOutQuad'
+                }).finished;
+
+                // Create and animate overlay
+                const overlay = document.createElement('div');
+                overlay.className = 'fixed inset-0 bg-indigo-900 z-50';
+                overlay.style.opacity = '0';
+                document.body.appendChild(overlay);
+
+                await anime({
+                    targets: overlay,
+                    opacity: [0, 1],
+                    duration: 500,
+                    easing: 'easeInOutQuad'
+                }).finished;
+
+                localStorage.setItem('isLoggedIn', 'true');
+                
+                // Short delay before redirect
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 100);
+            } catch (error) {
+                console.error('Animation error:', error);
+                // Fallback direct redirect
+                localStorage.setItem('isLoggedIn', 'true');
+                window.location.href = 'index.html';
+            }
         } else {
-            alert('Invalid credentials! Try demo@jobster.com / demo123');
+            // Error animation
+            const shakeDuration = 100;
+            
+            anime({
+                targets: formContainer,
+                translateX: [
+                    { value: -10, duration: shakeDuration },
+                    { value: 10, duration: shakeDuration },
+                    { value: -10, duration: shakeDuration },
+                    { value: 10, duration: shakeDuration },
+                    { value: 0, duration: shakeDuration }
+                ],
+                duration: shakeDuration * 5,
+                easing: 'easeInOutQuad'
+            });
+
+            // Show error message
+            const errorMsg = document.getElementById('errorMsg') || createErrorMessage();
+            errorMsg.textContent = 'Invalid credentials! Try demo@jobster.com / demo123';
+            anime({
+                targets: errorMsg,
+                opacity: [0, 1],
+                translateY: [-10, 0],
+                duration: 300,
+                easing: 'easeOutQuad'
+            });
+
+            // Re-enable button
+            loginButton.disabled = false;
         }
     });
+
+    // Add error message container on page load
+    createErrorMessage();
+
+    function createErrorMessage() {
+        if (!document.getElementById('errorMsg')) {
+            const errorMsg = document.createElement('div');
+            errorMsg.id = 'errorMsg';
+            errorMsg.className = 'text-red-500 text-sm mt-4 text-center opacity-0';
+            document.getElementById('loginForm').appendChild(errorMsg);
+            return errorMsg;
+        }
+        return document.getElementById('errorMsg');
+    }
 });
